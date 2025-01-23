@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name" translatable="false">PMDM TAREA 3</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="default_web_client_id">[Your Firebase ID Web-client]</string>
+    <string name="pokemons_index">Pokemons index</string>
+    <string name="pokemons_name">Pokemons Name</string>
+    <string name="pokemons_type_s">Pokemons Type(s)</string>
+    <string name="pokemons_height">Pokemons Height</string>
+    <string name="pokemons_weight">Pokemons weight</string>
+    <string name="pokemon_deleting_off_on">Pokemon Deleting Off/On</string>
+    <string name="change_lanaguage">Change Lanaguage</string>
+    <string name="about_me">About me…</string>
+    <string name="log_out_session">Log Out Session</string>
+    <string name="delete_from_team">Delete from team</string>
+    <string name="settings">SETTINGS</string>
+    <string name="team">Team</string>
+    <string name="pokedex">Pokedex</string>
+    <string name="settings_button">Settings</string>
+    <string name="back_to_team">Back to Team</string>
+
+</resources>

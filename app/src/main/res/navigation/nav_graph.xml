@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentPokedex">
+
+    <fragment
+        android:id="@id/fragmentPokedex"
+        android:name="dam.pmdm.practicanavigationyoutube.PokedexFragment"
+        android:label="fragment_pokedex"
+        tools:layout="@layout/fragment_pokedex" >
+        <action
+            android:id="@+id/action_fragmentPokedex_to_fragmentSettings"
+            app:destination="@id/fragmentSettings" />
+        <action
+            android:id="@+id/action_fragmentPokedex_to_fragmentTeam"
+            app:destination="@id/fragmentTeam" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSettings"
+        android:name="dam.pmdm.practicanavigationyoutube.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/fragmentTeam"
+        android:name="dam.pmdm.practicanavigationyoutube.TeamFragment"
+        android:label="fragment_team"
+        tools:layout="@layout/fragment_team" >
+        <action
+            android:id="@+id/action_fragmentTeam_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="dam.pmdm.practicanavigationyoutube.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="pokemon_height"
+            app:argType="integer" />
+        <argument
+            android:name="pokemon_weight"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_detailsFragment_to_fragmentTeam"
+            app:destination="@id/fragmentTeam" />
+    </fragment>
+</navigation>

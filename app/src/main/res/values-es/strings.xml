@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PracticaNavigationYoutube</string>
+    <string name="pokemons_index">Número de Pokemon</string>
+    <string name="default_web_client_id">Su ID de cliente web de Firebase</string>
+    <string name="pokemons_name">Nombre del Pokemon</string>
+    <string name="pokemons_type_s">Tipo(s) del Pokemon</string>
+    <string name="pokemons_height">Altura del Pokemon</string>
+    <string name="pokemons_weight">Peso del Pokemon</string>
+    <string name="change_lanaguage">Cambiar el idioma</string>
+    <string name="about_me">Sobre mi…</string>
+    <string name="log_out_session">Cerrar sesión</string>
+    <string name="pokemon_deleting_off_on">Habilitar borrado de Pokemons Off/On</string>
+    <string name="delete_from_team">Eliminar del equipo</string>
+    <string name="settings">AJUSTES</string>
+    <string name="team">Equipo</string>
+    <string name="pokedex">Pokedex</string>
+    <string name="settings_button">Ajustes</string>
+    <string name="back_to_team">Volver a Equipo</string>
+
+</resources>
