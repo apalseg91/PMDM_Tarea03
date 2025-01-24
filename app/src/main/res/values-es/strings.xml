@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PracticaNavigationYoutube</string>
     <string name="pokemons_index">Número de Pokemon</string>
     <string name="default_web_client_id">1028360524468-9634vh693ufkr85e1sa8vbelhk45gcvu.apps.googleusercontent.com</string>
     <string name="pokemons_name">Nombre del Pokemon</string>

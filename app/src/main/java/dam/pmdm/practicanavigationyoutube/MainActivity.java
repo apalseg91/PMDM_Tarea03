@@ -1,5 +1,7 @@
 package dam.pmdm.practicanavigationyoutube;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Obtén el idioma guardado
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSettings", Context.MODE_PRIVATE);
+        String language = sharedPreferences.getString("language", "en"); // "en" por defecto
+
+        // Aplica el idioma
+        applyLanguage(language);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -99,6 +109,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+    private void applyLanguage(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        android.content.res.Configuration config = new android.content.res.Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 
 }
