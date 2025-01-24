@@ -1,19 +1,22 @@
 package dam.pmdm.practicanavigationyoutube;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
+/**
+ * Clase que representa un Pokémon con sus atributos principales.
+ * Incluye información como altura, peso, tipos y sprites.
+ */
 public class Pokemon {
-    private boolean caught;
-    private int id;
-    private String name, imageUrl, url;
-    private List<TypeWrapper> types;
+    private boolean caught; // Indica si el Pokémon ha sido capturado.
+    private int id; // Identificador único del Pokémon.
+    private String name, imageUrl, url; // Nombre, URL de la imagen y URL del Pokémon.
+    private List<TypeWrapper> types; // Lista de tipos del Pokémon.
     @SerializedName("weight")
-    private int weight;
+    private int weight; // Peso del Pokémon en hectogramos.
     @SerializedName("height")
-    private int height;
-    private Sprites sprites;
+    private int height; // Altura del Pokémon en decímetros.
+    private Sprites sprites; // Sprites del Pokémon.
 
 
     public Pokemon() {
@@ -89,15 +92,12 @@ public class Pokemon {
         this.name = name;
     }
 
-
     public void setWeight(int weight) {
         this.weight = weight;
     }
-
     public boolean isCaught() {
         return caught;
     }
-
     public void setCaught(boolean caught) {
         this.caught = caught;
     }
@@ -115,7 +115,7 @@ public class Pokemon {
         String[] parts = url.split("/");
         return Integer.parseInt(parts[parts.length - 1]);
     }
-
+    // Clase interna TypeWrapper.
     public static class TypeWrapper {
         private Type type;
 
@@ -140,7 +140,6 @@ public class Pokemon {
         }
 
     }
-
     // Método auxiliar para convertir la lista de tipos a String
     public String getTypesAsString() {
         if (types == null || types.isEmpty()) return "Unknown";
@@ -150,7 +149,6 @@ public class Pokemon {
         }
         return typesString.substring(0, typesString.length() - 2); // Eliminar la última coma
     }
-
     // Clase interna para Sprites
     public static class Sprites {
         private String front_default;

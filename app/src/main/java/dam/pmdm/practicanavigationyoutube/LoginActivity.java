@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -23,21 +22,27 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
-
+    /**
+     * Declaracion y asignación de variables usadas.
+     */
     private static final int RC_SIGN_IN = 123;
     private EditText emailEditText, passwordEditText;
     private Button loginButton, registerButton;
     private ImageView logo;
     private com.google.android.gms.common.SignInButton googleSignInButton;
-
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
+    /**
+     * método que crea y toda de contenido la pantalla
+     *
+     * @param savedInstanceState objeto Bundle con la información para re-cargar la pantalla
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        //inicializo variables
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
@@ -45,14 +50,17 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInButton = findViewById(R.id.googleSignInButton);
         logo = findViewById(R.id.logoSlogan);
         mAuth = FirebaseAuth.getInstance();
-
+        //llamo al inicio de sesión con cuenta Google
         configureGoogleSignIn();
-
+        //manejo de botones
         loginButton.setOnClickListener(v -> loginUser());
         registerButton.setOnClickListener(v -> registerUser());
         googleSignInButton.setOnClickListener(v -> signInWithGoogle());
     }
 
+    /**
+     * método para manejar los inicios de sesión con cuenta Google
+     */
     private void configureGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -61,11 +69,22 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
+    /**
+     * método que inicia el flujo de autenticación con cuenta Google
+     */
     private void signInWithGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    /**
+     * método maneja el resultado de las actividades iniciadas, incluyendo la actividad de inicio de sesión con Google. Si el resultado corresponde al inicio de sesión,
+     * obtiene la cuenta de Google del usuario y procede a autenticarla con Firebase usando el token de la cuenta.
+     *
+     * @param requestCode: Código que identifica la solicitud que originó el resultado.
+     * @param resultCode:  Código que indica el estado del resultado.
+     * @param data:        Intent que contiene los datos devueltos.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -84,6 +103,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * método que realiza la autenticación con Firebase usando las credenciales obtenidas del inicio de sesión
+     * con Google. Si la autenticación es exitosa, redirige al usuario a la pantalla principal de la aplicación.
+     *
+     * @param idToken Token de autenticación de la cuenta de Google del usuario.
+     */
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -99,6 +124,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * método que verifica que los campos de correo y contraseña no estén vacíos.Si las credenciales
+     * son válidas, redirige al usuario a la pantalla principal.
+     */
     private void loginUser() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
@@ -119,6 +148,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * método que registra un nuevo usuario en Firebase Authentication usando un correo electrónico
+     * y contraseña.Verifica que los campos no estén vacíos y que la contraseña tenga al menos 6 caracteres.
+     */
     private void registerUser() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();

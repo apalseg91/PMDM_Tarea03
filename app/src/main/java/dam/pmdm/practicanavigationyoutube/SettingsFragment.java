@@ -5,21 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.Locale;
-
+/**
+ * Fragmento de configuraciones de la aplicación.
+ * Permite cambiar configuraciones como el idioma, mostrar un dialog "Acerca de",
+ * activar/desactivar la eliminación de elementos y cerrar sesión.
+ */
 public class SettingsFragment extends Fragment {
 
     private Switch deleteSwitch;
@@ -32,7 +31,12 @@ public class SettingsFragment extends Fragment {
     public SettingsFragment() {
         // Required empty public constructor
     }
-
+    /**
+     * Inicializa configuraciones al crear el fragmento, incluyendo las preferencias compartidas
+     * y el idioma predeterminado.
+     *
+     * @param savedInstanceState Estado guardado de la instancia previa, si existe.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,14 @@ public class SettingsFragment extends Fragment {
         String language = sharedPreferences.getString("language", "en"); // "en" es el idioma predeterminado
         applyLanguage(language);
     }
-
+    /**
+     * Crea y configura la vista del fragmento, incluyendo listeners para los botones y switches.
+     *
+     * @param inflater Objeto utilizado para inflar el layout del fragmento.
+     * @param container Contenedor padre al que se añadirá el fragmento.
+     * @param savedInstanceState Estado guardado de la instancia previa, si existe.
+     * @return La vista inflada y configurada del fragmento.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,7 +89,9 @@ public class SettingsFragment extends Fragment {
 
         return view;
     }
-
+    /**
+     * Cambia el idioma de la aplicación y reinicia la actividad para aplicar el cambio.
+     */
     private void changeLanguage() {
         // Obtiene el idioma actual desde las preferencias
         String currentLanguage = sharedPreferences.getString("language", "en"); // "en" es el predeterminado si no hay valor
@@ -99,6 +112,11 @@ public class SettingsFragment extends Fragment {
         // Reinicia la actividad para aplicar los cambios
         requireActivity().recreate();
     }
+    /**
+     * Aplica un idioma específico a la configuración del dispositivo.
+     *
+     * @param languageCode Código del idioma (por ejemplo, "en" para inglés o "es" para español).
+     */
     public void applyLanguage(String languageCode) {
         Locale locale = new Locale(languageCode);
         Locale.setDefault(locale);
@@ -106,15 +124,19 @@ public class SettingsFragment extends Fragment {
         config.locale = locale;
         this.getResources().updateConfiguration(config, this.getResources().getDisplayMetrics());
     }
-
+    /**
+     * Muestra un diálogo "Acerca de" con información sobre la aplicación.
+     */
     private void showAboutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("About...");
-        builder.setMessage("Developed by: Alejandro Palomeque Segura.\nIES Aguadulce-Distancia\nTarea 3.-PMDM 2024-2025\nVersión: 1.0.0");
+        builder.setMessage("Developed by: Alejandro Palomeque Segura.\n\nIES Aguadulce-Distancia\n\nTarea 3.-PMDM 2024-2025\n\nVersión: 1.0.0");
         builder.setPositiveButton("OK", null);
         builder.create().show();
     }
-
+    /**
+     * Cierra sesión del usuario actual y redirige a la pantalla de inicio de sesión.
+     */
     public void logout() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signOut(); // Cierra la sesión de Firebase

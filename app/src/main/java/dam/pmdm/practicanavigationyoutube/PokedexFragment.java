@@ -1,34 +1,25 @@
 package dam.pmdm.practicanavigationyoutube;
 
-import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link PokedexFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragmento que muestra la lista de Pokémon en la Pokédex.
  */
 public class PokedexFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -39,8 +30,6 @@ public class PokedexFragment extends Fragment {
     private RecyclerView recyclerView;
     private PokedexAdapter adapter;
     private List<Pokemon> list;
-
-
 
     public PokedexFragment() {
         // Required empty public constructor
@@ -73,70 +62,44 @@ public class PokedexFragment extends Fragment {
         }
     }
 
-   /* @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_pokedex, container, false);
-        recyclerView = view.findViewById(R.id.recyclerviewPokedex);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        list = new ArrayList<>();
-        adapter = new PokedexAdapter(requireContext(),list);
-        recyclerView.setAdapter(adapter);
-
-        // Llama al método para obtener los Pokémon
-        getPokemones();
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // Inicializa el ViewModel compartido
-        PokemonViewModel viewModel = new ViewModelProvider(requireActivity()).get(PokemonViewModel.class);
-
-        // Configurar RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerviewPokedex);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        // Configurar Adaptador con el ViewModel
-        PokedexAdapter adapter = new PokedexAdapter(requireContext(), list,viewModel);
-        recyclerView.setAdapter(adapter);
-    }*/
+    /**
+     * método que inicializa la vista del fragmento y devuelve la vista raiz del fragmento
+     */
    @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       // Inflate the layout for este fragment
+       //Inlfa el layout del fragmento
        View view = inflater.inflate(R.layout.fragment_pokedex, container, false);
-
        recyclerView = view.findViewById(R.id.recyclerviewPokedex);
        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-// Inicializa el ViewModel compartido
+       //Inicializa el ViewModel compartido
        PokemonViewModel viewModel = new ViewModelProvider(requireActivity()).get(PokemonViewModel.class);
-       // Inicializar la lista y el adaptador
+       //Inicializar la lista y el adaptador
        list = new ArrayList<>();
        adapter = new PokedexAdapter(requireContext(), list,viewModel); // Inicializa el adaptador
        recyclerView.setAdapter(adapter);
-
        // Llama al método para obtener los Pokémon
        getPokemones();
-
        return view;
    }
 
+    /**
+     * método que obtiene una instancia de un recyclerview y la devuelve
+     */
     public RecyclerView getRecyclerView() {
         return recyclerView;
     }
 
+    /**
+     * método que Realiza una llamada con Retrofit. Actualiza la lista y el adaptador con los resultados.
+     */
     private void getPokemones() {
         ApiService service = Client.getClient().create(ApiService.class);
-        Call<PokemonResponse> call = service.getPokemonList(0, 151);
+        Call<PokemonResponse> call = service.getPokemonList(0, 151);//establecemos el numero de pokemeons sobre el que iterar en la API
         call.enqueue(new Callback<PokemonResponse>() {
             @Override
             public void onResponse(Call<PokemonResponse> call, Response<PokemonResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Pokemon> results = response.body().getResults();
+                    List<Pokemon> results = response.body().getResults();//cargamos resultados en la lista
                     for (Pokemon pokemon : results) {
                         if (pokemon.getUrl() != null) {
                             pokemon.setId(pokemon.getIdFromUrl()); // Extrae y asigna el ID desde la URL
@@ -146,27 +109,19 @@ public class PokedexFragment extends Fragment {
                     adapter.notifyDataSetChanged(); // Notifica al adaptador para actualizar el RecyclerView
                 }
             }
-
             @Override
-            public void onFailure(Call<PokemonResponse> call, Throwable t) {
+            public void onFailure(Call<PokemonResponse> call, Throwable t) {//en caso de probelmas
                 t.printStackTrace();
             }
         });
     }
+
+    /**
+     * Actualiza la vista al reanudar el fragmento. Notifica al adaptador para refrescar el RecyclerView.
+     */
     @Override
     public void onResume() {
         super.onResume();
         adapter.notifyDataSetChanged(); // Refresca el RecyclerView
     }
-
-    private void addPokemonToTeam(Pokemon pokemon) {
-        // Obtén una instancia del ViewModel
-        PokemonViewModel viewModel = new ViewModelProvider(requireActivity()).get(PokemonViewModel.class);
-
-        // Llama al método del ViewModel para modificar el equipo
-        viewModel.addPokemonToTeam(pokemon);
-    }
-
-
-
 }

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -30,9 +28,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link TeamFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragmento para mostrar un equipo de Pokémon en un RecyclerView.
+ * Carga datos desde Firestore y permite la interacción con elementos.
  */
 public class TeamFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -47,9 +44,11 @@ public class TeamFragment extends Fragment {
     private List<Pokemon> teamList;
     private FirebaseFirestore firestore;
     private PokemonViewModel viewModel;
+
     public TeamFragment() {
         // Required empty public constructor
     }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -67,6 +66,12 @@ public class TeamFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    /**
+     * Inicializa el fragmento con datos opcionales pasados como argumentos.
+     *
+     * @param savedInstanceState Estado guardado de la instancia previa, si existe.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +80,15 @@ public class TeamFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
+    /**
+     * Crea y configura la vista principal del fragmento.
+     *
+     * @param inflater           Inflador para crear las vistas.
+     * @param container          Contenedor padre del fragmento.
+     * @param savedInstanceState Estado guardado de la instancia previa, si existe.
+     * @return Vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -99,11 +113,14 @@ public class TeamFragment extends Fragment {
         viewModel.getTeam().observe(getViewLifecycleOwner(), team -> {
             adapter.updateTeam(team); // Actualizar lista en el adaptador
         });
-
         // Cargar los Pokémon desde Firestore
         loadTeamFromFirestore();
         return view;
     }
+
+    /**
+     * Carga el equipo desde Firestore y actualiza la lista local.
+     */
     private void loadTeamFromFirestore() {
         //todo: borrar traza
         Log.d("Firestore", "Recargando equipo desde Firestore...");
@@ -139,7 +156,7 @@ public class TeamFragment extends Fragment {
 
                                             @Override
                                             public void onFailure(Call<Pokemon> call, Throwable t) {
-                                                Log.e("FirestoreError", "Error al cargar el equipo: "+ t.getMessage());
+                                                Log.e("FirestoreError", "Error al cargar el equipo: " + t.getMessage());
                                                 Toast.makeText(getContext(), "Error cargando detalles", Toast.LENGTH_SHORT).show();
                                             }
                                         });
@@ -153,13 +170,17 @@ public class TeamFragment extends Fragment {
                     }
                 });
     }
+
+    /**
+     * Abre un fragmento de detalles para un Pokémon seleccionado.
+     *
+     * @param pokemon Objeto Pokémon con los detalles a mostrar.
+     */
     private void openDetailsFragment(Pokemon pokemon) {
         Bundle bundle = new Bundle();
         int height = pokemon.getHeight();
         int weight = pokemon.getWeight();
-//TODO:- borrar trazas
-        Log.d("TeamFragment", "Height (to pass): " + height);
-        Log.d("TeamFragment", "Weight (to pass): " + weight);
+
         bundle.putInt("pokemon_id", pokemon.getId());
         bundle.putString("pokemon_name", pokemon.getName());
         bundle.putString("pokemon_image", pokemon.getImageUrl());
@@ -169,10 +190,13 @@ public class TeamFragment extends Fragment {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_fragmentTeam_to_detailsFragment, bundle);
     }
+
+    /**
+     * Recarga los datos del equipo al reanudar el fragmento.
+     */
     @Override
     public void onResume() {
         super.onResume();
         loadTeamFromFirestore(); // Recargar los datos del equipo al volver al fragmento
     }
-
 }

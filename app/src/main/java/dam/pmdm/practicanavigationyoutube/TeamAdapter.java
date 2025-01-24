@@ -1,10 +1,7 @@
 package dam.pmdm.practicanavigationyoutube;
 
-import static java.security.AccessController.getContext;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +9,30 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Arrays;
 import java.util.List;
-
+/**
+ * Adaptador para mostrar un equipo de Pokémon en un RecyclerView.
+ * Proporciona opciones para visualizar detalles y eliminar elementos si está permitido.
+ */
 public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder> {
     private  List<Pokemon> pkmnList;
     private OnItemClickListener listener;
     private Context context;
     private boolean isDeletable; // Estado del switch
     private PokemonViewModel viewModel;
-
+    /**
+     * Interface para manejar eventos de clic en elementos.
+     */
     public interface OnItemClickListener {
+        /**
+         * Evento disparado al hacer clic en un Pokémon.
+         *
+         * @param pokemon Objeto Pokémon clicado.
+         */
         void onItemClick(Pokemon pokemon);
     }
 
@@ -42,6 +43,13 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
         this.context = context;
         this.viewModel = viewModel;
     }
+    /**
+     * Crea un nuevo ViewHolder inflando el layout correspondiente.
+     *
+     * @param parent Contenedor padre donde se mostrará el ViewHolder.
+     * @param viewType Tipo de vista (no utilizado en este caso).
+     * @return Una nueva instancia de TeamViewHolder.
+     */
     @NonNull
     @Override
     public TeamAdapter.TeamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,12 +59,20 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
                 parent, false);
         return new TeamViewHolder(view);
     }
+    /**
+     * Vincula un Pokémon a un ViewHolder y configura los listeners de eventos.
+     *
+     * @param holder El ViewHolder que contiene las vistas.
+     * @param position Posición del elemento en la lista.
+     */
     @Override
     public void onBindViewHolder(@NonNull TeamAdapter.TeamViewHolder holder, int position) {
+        //establecemos los datos
         Pokemon pokemon = pkmnList.get(position);
         holder.nameField.setText(pokemon.getName());
         String types = pokemon.getTypesAsString();
         holder.typesField.setText(types);
+        //establecemos imagen desde la url
         String imageUrl = pokemon.getImageUrl();
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(holder.img.getContext())
@@ -71,9 +87,9 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
         SharedPreferences sharedPreferences = holder.itemView.getContext()
                 .getSharedPreferences("AppSettings", Context.MODE_PRIVATE);
         boolean isDeletable = sharedPreferences.getBoolean("isDeletable", false);
-
+        //manejo del botond de borrado
         holder.deleteButton.setOnClickListener(v -> {
-            if (isDeletable) {
+            if (isDeletable) {//comprobamos si está activa la opcion de borrado
                 // Eliminar de Firestore
                 FirebaseFirestore.getInstance()
                         .collection("team")
@@ -84,62 +100,27 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
                             pkmnList.remove(position);
                             notifyItemRemoved(position);
                             notifyItemRangeChanged(position, pkmnList.size());
+                            //informo del pokemon eliminado
                             Toast.makeText(v.getContext(), pokemon.getName() + " eliminado del equipo", Toast.LENGTH_SHORT).show();
                         })
-                        .addOnFailureListener(e -> {
+                        .addOnFailureListener(e -> {//si ha habido algun error
                             Toast.makeText(v.getContext(), "Error al eliminar Pokémon", Toast.LENGTH_SHORT).show();
                         });
-            } else {
+            } else {//si no está activa la opción de borrado informo
                 Toast.makeText(v.getContext(), "No puedes eliminar Pokémon mientras el bloqueo esté activo", Toast.LENGTH_SHORT).show();
             }
         });
         // Configurar el clic en el elemento
         holder.itemView.setOnClickListener(v -> listener.onItemClick(pokemon));
     }
+    /**
+     * Devuelve el número total de elementos en la lista.
+     *
+     * @return Cantidad de elementos en la lista.
+     */
     @Override
     public int getItemCount() {
         return pkmnList.size();
-    }
-    private void removePokemonFromTeam(int position, View view) {
-        Pokemon removedPokemon = pkmnList.get(position);
-        //TODO.- Borrar traza
-        Log.d("Adapter", "Eliminado Pokémon: " + removedPokemon.getName());
-        // Eliminar de Firestore
-        FirebaseFirestore.getInstance()
-                .collection("team")
-                .document(String.valueOf(removedPokemon.getId()))
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    if ( context instanceof MainActivity) {
-                        ((MainActivity) context).updatePokemonState(removedPokemon.getId(), false);
-                    }
-                    // Eliminar de la lista local y notificar al adaptador
-                    pkmnList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, pkmnList.size());
-                    Toast.makeText(view.getContext(), "Eliminado con éxito", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(view.getContext(), "Error al eliminar", Toast.LENGTH_SHORT).show();
-                });
-    }
-    // Método para recargar los datos
-    private void reloadTeamFromFirestore() {
-        FirebaseFirestore.getInstance()
-                .collection("team")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        pkmnList.clear();
-                        for (DocumentSnapshot document : task.getResult()) {
-                            Pokemon pokemon = document.toObject(Pokemon.class);
-                            pkmnList.add(pokemon);
-                        }
-                        notifyDataSetChanged(); // Refresca toda la lista
-                    } else {
-                        // Maneja error en la recarga
-                    }
-                });
     }
 
     public void updateTeam(List<Pokemon> newTeam) {
@@ -147,6 +128,9 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
         pkmnList.addAll(newTeam);
         notifyDataSetChanged();
     }
+    /**
+     * Clase interna que representa un ViewHolder para un Pokémon.
+     */
     public static class TeamViewHolder extends RecyclerView.ViewHolder {
         TextView nameField, typesField;
         ImageView img;
