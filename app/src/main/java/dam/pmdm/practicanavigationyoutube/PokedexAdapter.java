@@ -1,6 +1,7 @@
 package dam.pmdm.practicanavigationyoutube;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +21,17 @@ import java.util.List;
 
 public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.PokedexViewHolder> {
     private List<Pokemon> pkmnList;
-    private final Context context;
+    private  Context context;
     private final FirebaseFirestore firestore;
+    private PokemonViewModel viewModel;
 
-    public PokedexAdapter(Context context,List<Pokemon> pkmnList) {
+
+    public PokedexAdapter(Context context,List<Pokemon> pkmnList, PokemonViewModel viewModel)
+ {
         this.context = context;
         this.pkmnList = pkmnList;
-        this.firestore = FirebaseFirestore.getInstance(); // Inicializa Firestore
+        this.firestore = FirebaseFirestore.getInstance();
+        this.viewModel = viewModel;
 
     }
 
@@ -49,6 +54,12 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.PokedexV
         // Setea los datos en el cardview
         holder.nameField.setText("Nombre: \n"+pokemon.getName());
         holder.idField.setText("Pkmn Id:\n" + String.valueOf(pokemon.getId()));
+
+        // Actualiza el color y el estado según `isCaught`
+        int color = pokemon.isCaught() ? Color.parseColor("#A5D6A7") : Color.WHITE; // Verde si capturado
+        holder.cardView.setCardBackgroundColor(color);
+        holder.cardView.setClickable(!pokemon.isCaught());
+        holder.goItButtom.setEnabled(!pokemon.isCaught());
 
         // Controlar la habilitación basándonos en el atributo "caught"
         holder.itemView.setAlpha(pokemon.isCaught() ? 0.5f : 1.0f); // Transparencia si está capturado
@@ -82,12 +93,17 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.PokedexV
     public static class PokedexViewHolder extends RecyclerView.ViewHolder {
         TextView idField, nameField;
         ImageButton goItButtom;
+        CardView cardView;
 
         public PokedexViewHolder(@NonNull View itemView) {
             super(itemView);
             idField = itemView.findViewById(R.id.numberPokedex);
             nameField = itemView.findViewById(R.id.namePokedex);
             goItButtom = itemView.findViewById(R.id.catchButton);
+            cardView = itemView.findViewById(R.id.cardviewPokedex);
         }
+    }
+    public void setViewModel(PokemonViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 }

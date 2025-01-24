@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    /*public void updatePokemonState(int pokemonId, boolean isCaught) {
+    public void updatePokemonState(int pokemonId, boolean isCaught) {
         PokedexFragment pokedexFragment = (PokedexFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentContainerView);
 
@@ -99,6 +99,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-    }*/
+    }
 
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">PMDM TAREA 3</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="default_web_client_id">[Your Firebase ID Web-client]</string>
+    <string name="default_web_client_id">1028360524468-9634vh693ufkr85e1sa8vbelhk45gcvu.apps.googleusercontent.com</string>
     <string name="pokemons_index">Pokemons index</string>
     <string name="pokemons_name">Pokemons Name</string>
     <string name="pokemons_type_s">Pokemons Type(s)</string>

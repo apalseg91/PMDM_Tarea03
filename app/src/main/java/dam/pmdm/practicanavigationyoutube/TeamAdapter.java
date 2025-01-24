@@ -4,6 +4,7 @@ import static java.security.AccessController.getContext;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,18 +29,19 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
     private OnItemClickListener listener;
     private Context context;
     private boolean isDeletable; // Estado del switch
+    private PokemonViewModel viewModel;
 
     public interface OnItemClickListener {
         void onItemClick(Pokemon pokemon);
     }
 
-    public TeamAdapter(List<Pokemon> pkmnList, OnItemClickListener listener,boolean isDeletable,Context context) {
+    public TeamAdapter(List<Pokemon> pkmnList, OnItemClickListener listener,boolean isDeletable,Context context, PokemonViewModel viewModel) {
         this.pkmnList = pkmnList;
         this.listener = listener;
         this.isDeletable = isDeletable;
         this.context = context;
+        this.viewModel = viewModel;
     }
-
     @NonNull
     @Override
     public TeamAdapter.TeamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,7 +51,6 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
                 parent, false);
         return new TeamViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull TeamAdapter.TeamViewHolder holder, int position) {
         Pokemon pokemon = pkmnList.get(position);
@@ -66,7 +67,6 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
         } else {
             holder.img.setImageResource(R.drawable.baseline_catching_pokemon_24);
         }
-
         // Obtener el estado del switch desde SharedPreferences
         SharedPreferences sharedPreferences = holder.itemView.getContext()
                 .getSharedPreferences("AppSettings", Context.MODE_PRIVATE);
@@ -74,37 +74,45 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
 
         holder.deleteButton.setOnClickListener(v -> {
             if (isDeletable) {
-                // Si está permitido, elimina el Pokémon y muestra un mensaje
-                removePokemonFromTeam(position, v);
-                Toast.makeText(v.getContext(), pokemon.getName() + " eliminado del equipo",
-                        Toast.LENGTH_SHORT).show();
+                // Eliminar de Firestore
+                FirebaseFirestore.getInstance()
+                        .collection("team")
+                        .document(String.valueOf(pokemon.getId()))
+                        .delete()
+                        .addOnSuccessListener(aVoid -> {
+                            // Eliminar de la lista local y notificar cambios
+                            pkmnList.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, pkmnList.size());
+                            Toast.makeText(v.getContext(), pokemon.getName() + " eliminado del equipo", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(v.getContext(), "Error al eliminar Pokémon", Toast.LENGTH_SHORT).show();
+                        });
             } else {
-                // Si no está permitido, muestra un mensaje informativo
-                Toast.makeText(v.getContext(), "No puedes eliminar Pokémon mientras el bloqueo esté activo",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "No puedes eliminar Pokémon mientras el bloqueo esté activo", Toast.LENGTH_SHORT).show();
             }
         });
-
+        // Configurar el clic en el elemento
         holder.itemView.setOnClickListener(v -> listener.onItemClick(pokemon));
     }
-
     @Override
     public int getItemCount() {
         return pkmnList.size();
     }
-
     private void removePokemonFromTeam(int position, View view) {
         Pokemon removedPokemon = pkmnList.get(position);
-
+        //TODO.- Borrar traza
+        Log.d("Adapter", "Eliminado Pokémon: " + removedPokemon.getName());
         // Eliminar de Firestore
         FirebaseFirestore.getInstance()
                 .collection("team")
                 .document(String.valueOf(removedPokemon.getId()))
                 .delete()
                 .addOnSuccessListener(aVoid -> {
-                    /*if ( context instanceof MainActivity) {
+                    if ( context instanceof MainActivity) {
                         ((MainActivity) context).updatePokemonState(removedPokemon.getId(), false);
-                    }*/
+                    }
                     // Eliminar de la lista local y notificar al adaptador
                     pkmnList.remove(position);
                     notifyItemRemoved(position);
@@ -115,8 +123,6 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
                     Toast.makeText(view.getContext(), "Error al eliminar", Toast.LENGTH_SHORT).show();
                 });
     }
-
-
     // Método para recargar los datos
     private void reloadTeamFromFirestore() {
         FirebaseFirestore.getInstance()
@@ -136,6 +142,11 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
                 });
     }
 
+    public void updateTeam(List<Pokemon> newTeam) {
+        pkmnList.clear();
+        pkmnList.addAll(newTeam);
+        notifyDataSetChanged();
+    }
     public static class TeamViewHolder extends RecyclerView.ViewHolder {
         TextView nameField, typesField;
         ImageView img;
@@ -149,5 +160,4 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
             deleteButton = itemView.findViewById(R.id.deleteButtonTeam);
         }
     }
-
 }

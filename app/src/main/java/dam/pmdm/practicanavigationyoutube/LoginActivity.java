@@ -3,6 +3,7 @@ package dam.pmdm.practicanavigationyoutube;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
         googleSignInButton = findViewById(R.id.googleSignInButton);
-logo = findViewById(R.id.logoSlogan);
+        logo = findViewById(R.id.logoSlogan);
         mAuth = FirebaseAuth.getInstance();
 
         configureGoogleSignIn();
@@ -57,7 +58,6 @@ logo = findViewById(R.id.logoSlogan);
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
@@ -78,6 +78,7 @@ logo = findViewById(R.id.logoSlogan);
                     firebaseAuthWithGoogle(account.getIdToken());
                 }
             } catch (Exception e) {
+                Log.d("Error de login", e.toString());
                 Toast.makeText(this, "Google sign-in failed", Toast.LENGTH_SHORT).show();
             }
         }

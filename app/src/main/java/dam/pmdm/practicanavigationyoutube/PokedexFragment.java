@@ -3,7 +3,10 @@ package dam.pmdm.practicanavigationyoutube;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,9 +39,8 @@ public class PokedexFragment extends Fragment {
     private RecyclerView recyclerView;
     private PokedexAdapter adapter;
     private List<Pokemon> list;
-    private List<Pokemon> pokedexList;
-    private int offset= 0;
-    private int limit = 151;
+
+
 
     public PokedexFragment() {
         // Required empty public constructor
@@ -71,7 +73,7 @@ public class PokedexFragment extends Fragment {
         }
     }
 
-    @Override
+   /* @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -87,6 +89,42 @@ public class PokedexFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Inicializa el ViewModel compartido
+        PokemonViewModel viewModel = new ViewModelProvider(requireActivity()).get(PokemonViewModel.class);
+
+        // Configurar RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerviewPokedex);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        // Configurar Adaptador con el ViewModel
+        PokedexAdapter adapter = new PokedexAdapter(requireContext(), list,viewModel);
+        recyclerView.setAdapter(adapter);
+    }*/
+   @Override
+   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+       // Inflate the layout for este fragment
+       View view = inflater.inflate(R.layout.fragment_pokedex, container, false);
+
+       recyclerView = view.findViewById(R.id.recyclerviewPokedex);
+       recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+// Inicializa el ViewModel compartido
+       PokemonViewModel viewModel = new ViewModelProvider(requireActivity()).get(PokemonViewModel.class);
+       // Inicializar la lista y el adaptador
+       list = new ArrayList<>();
+       adapter = new PokedexAdapter(requireContext(), list,viewModel); // Inicializa el adaptador
+       recyclerView.setAdapter(adapter);
+
+       // Llama al método para obtener los Pokémon
+       getPokemones();
+
+       return view;
+   }
+
     public RecyclerView getRecyclerView() {
         return recyclerView;
     }
@@ -120,5 +158,15 @@ public class PokedexFragment extends Fragment {
         super.onResume();
         adapter.notifyDataSetChanged(); // Refresca el RecyclerView
     }
+
+    private void addPokemonToTeam(Pokemon pokemon) {
+        // Obtén una instancia del ViewModel
+        PokemonViewModel viewModel = new ViewModelProvider(requireActivity()).get(PokemonViewModel.class);
+
+        // Llama al método del ViewModel para modificar el equipo
+        viewModel.addPokemonToTeam(pokemon);
+    }
+
+
 
 }
