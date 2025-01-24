@@ -57,28 +57,54 @@ public class DetailsFragment extends Fragment {
      * Método que recibe los datos desde el TeamFragment y los carga en este fragment.
      */
     private void loadDetails() {
-        //compruebo que el objeto Bundle con la info no es nulo
+// Compruebo que el objeto Bundle con la info no es nulo
         if (getArguments() != null) {
             Bundle args = getArguments();
-            //cojo la info del bundle, fijo valores por defecto por si hay problemas con el Bundle
+            // Cojo la info del bundle, fijo valores por defecto por si hay problemas con el Bundle
             int id = args.getInt("pokemon_id", -1);
             String name = args.getString("pokemon_name", "Unknown");
             String imageUrl = args.getString("pokemon_image", "");
-            String types = args.getString("pokemon_types", "Unknown");
+            String types = args.getString("pokemon_types", "Unknown"); // Ya tienes los tipos aquí
             int height = args.getInt("pokemon_height", -1);
             int weight = args.getInt("pokemon_weight", -1);
-            //la asigno a los elementos que han de mostrala
+
+            // Asigno los valores a los elementos que han de mostrarlos
             idDetails.setText("ID: " + id);
             nameDetails.setText(name);
-            typeDetails.setText("Types: " + types);
-            heightDetails.setText("Height: " + height);
-            weightDetails.setText("Weight: " + weight);
-            //coloco la imagen en su elemento
+            heightDetails.setText(String.valueOf(height)+" kg");
+           weightDetails.setText(String.valueOf(weight)+" m");
+
+            // Traducir los tipos del Pokémon
+            StringBuilder translatedTypes = new StringBuilder();
+            String[] typesArray = types.split(", ");
+            for (String type : typesArray) {
+                if (translatedTypes.length() > 0) {
+                    translatedTypes.append(", ");
+                }
+                int typeResId = getResources().getIdentifier(
+                        "type_" + type.toLowerCase(),
+                        "string",
+                        getContext().getPackageName()
+                );
+                if (typeResId != 0) {
+                    translatedTypes.append(getString(typeResId));
+                } else {
+                    translatedTypes.append(type); // Si no hay traducción, usa el tipo original
+                }
+            }
+
+            // Establecer los tipos traducidos
+            typeDetails.setText("Types: " + translatedTypes.toString());
+
+            // Mostrar la imagen del Pokémon
             Glide.with(this)
-                    .load(imageUrl)//url de la Imagen del pokemon
-                    .placeholder(R.drawable.ic_launcher_foreground)//imagen si no se puede mostrar la URL
-                    .error(R.drawable.baseline_error_24)//imagen en caso de que la URL sea null
+                    .load(imageUrl) // URL de la imagen del Pokémon
+                    .placeholder(R.drawable.ic_launcher_foreground) // Imagen si no se puede mostrar la URL
+                    .error(R.drawable.baseline_error_24) // Imagen en caso de que la URL sea null
                     .into(imageDetails);
         }
+
     }
 }
+
+

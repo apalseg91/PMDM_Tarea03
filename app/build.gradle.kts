@@ -37,6 +37,7 @@ dependencies {
 
 
     implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation(libs.media3.common)
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     implementation("com.google.firebase:firebase-firestore")

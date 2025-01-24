@@ -9,21 +9,29 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.OptIn;
+import androidx.media3.common.util.Log;
+import androidx.media3.common.util.UnstableApi;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
+
 /**
  * Adaptador para mostrar un equipo de Pokémon en un RecyclerView.
  * Proporciona opciones para visualizar detalles y eliminar elementos si está permitido.
  */
 public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder> {
-    private  List<Pokemon> pkmnList;
+    private List<Pokemon> pkmnList;
     private OnItemClickListener listener;
     private Context context;
     private boolean isDeletable; // Estado del switch
     private PokemonViewModel viewModel;
+
     /**
      * Interface para manejar eventos de clic en elementos.
      */
@@ -36,17 +44,18 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
         void onItemClick(Pokemon pokemon);
     }
 
-    public TeamAdapter(List<Pokemon> pkmnList, OnItemClickListener listener,boolean isDeletable,Context context, PokemonViewModel viewModel) {
+    public TeamAdapter(List<Pokemon> pkmnList, OnItemClickListener listener, boolean isDeletable, Context context, PokemonViewModel viewModel) {
         this.pkmnList = pkmnList;
         this.listener = listener;
         this.isDeletable = isDeletable;
         this.context = context;
         this.viewModel = viewModel;
     }
+
     /**
      * Crea un nuevo ViewHolder inflando el layout correspondiente.
      *
-     * @param parent Contenedor padre donde se mostrará el ViewHolder.
+     * @param parent   Contenedor padre donde se mostrará el ViewHolder.
      * @param viewType Tipo de vista (no utilizado en este caso).
      * @return Una nueva instancia de TeamViewHolder.
      */
@@ -56,15 +65,17 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_team,
-                parent, false);
+                        parent, false);
         return new TeamViewHolder(view);
     }
+
     /**
      * Vincula un Pokémon a un ViewHolder y configura los listeners de eventos.
      *
-     * @param holder El ViewHolder que contiene las vistas.
+     * @param holder   El ViewHolder que contiene las vistas.
      * @param position Posición del elemento en la lista.
      */
+    @OptIn(markerClass = UnstableApi.class)
     @Override
     public void onBindViewHolder(@NonNull TeamAdapter.TeamViewHolder holder, int position) {
         //establecemos los datos
@@ -87,6 +98,33 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
         SharedPreferences sharedPreferences = holder.itemView.getContext()
                 .getSharedPreferences("AppSettings", Context.MODE_PRIVATE);
         boolean isDeletable = sharedPreferences.getBoolean("isDeletable", false);
+        //traducir los tipos del pokemon
+        // Verificar que getTypes() no sea nulo
+        if (pokemon.getTypes() != null && !pokemon.getTypes().isEmpty()) {
+            StringBuilder translatedTypes = new StringBuilder();
+            for (Pokemon.TypeWrapper typeWrapper : pokemon.getTypes()) {
+                if (translatedTypes.length() > 0) {
+                    translatedTypes.append(", ");
+                }
+                // Obtener nombre del tipo
+                String typeName = typeWrapper.getType().getName();
+                // Traducir el tipo
+                int typeResId = context.getResources().getIdentifier(
+                        "type_" + typeName.toLowerCase(),
+                        "string",
+                        context.getPackageName()
+                );
+                // Verificar si se encontró la traducción
+                if (typeResId != 0) {
+                    translatedTypes.append(context.getString(typeResId));
+                } else {
+                    translatedTypes.append(typeName); // Si no hay traducción, usa el tipo original
+                }
+            }
+            holder.typesField.setText(translatedTypes.toString());
+        } else {
+            holder.typesField.setText("Unknown"); // Si no hay tipos, muestra "Unknown"
+        }
         //manejo del botond de borrado
         holder.deleteButton.setOnClickListener(v -> {
             if (isDeletable) {//comprobamos si está activa la opcion de borrado
@@ -113,6 +151,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
         // Configurar el clic en el elemento
         holder.itemView.setOnClickListener(v -> listener.onItemClick(pokemon));
     }
+
     /**
      * Devuelve el número total de elementos en la lista.
      *
@@ -128,6 +167,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
         pkmnList.addAll(newTeam);
         notifyDataSetChanged();
     }
+
     /**
      * Clase interna que representa un ViewHolder para un Pokémon.
      */

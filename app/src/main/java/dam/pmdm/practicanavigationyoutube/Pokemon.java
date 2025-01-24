@@ -18,7 +18,6 @@ public class Pokemon {
     private int height; // Altura del Pokémon en decímetros.
     private Sprites sprites; // Sprites del Pokémon.
 
-
     public Pokemon() {
         // Constructor vacío requerido por Firestore
     }
@@ -141,14 +140,28 @@ public class Pokemon {
 
     }
     // Método auxiliar para convertir la lista de tipos a String
-    public String getTypesAsString() {
+    /*public String getTypesAsString() {
         if (types == null || types.isEmpty()) return "Unknown";
         StringBuilder typesString = new StringBuilder();
         for (TypeWrapper typeWrapper : types) {
             typesString.append(typeWrapper.getType().getName()).append(", ");
         }
         return typesString.substring(0, typesString.length() - 2); // Eliminar la última coma
+    */
+    public String getTypesAsString() {
+        if (types == null || types.isEmpty()) return "Unknown";
+        StringBuilder typesString = new StringBuilder();
+        for (TypeWrapper typeWrapper : types) {
+            typesString.append(typeWrapper.getType().getName()).append(", ");
+        }
+        // Asegurarse de que la cadena no termine con una coma y un espacio.
+        if (typesString.length() > 0) {
+            typesString.setLength(typesString.length() - 2); // Eliminar la última coma y espacio.
+        }
+        return typesString.toString();
+
     }
+
     // Clase interna para Sprites
     public static class Sprites {
         private String front_default;
