@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardviewPokedex"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="12dp"
-    android:elevation="10dp"
-    android:layout_margin="10sp">
+    app:cardBackgroundColor="@color/Olivine"
+    android:elevation="8dp"
+    android:layout_margin="16dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="15dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/numberPokedex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pokemon index"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginEnd="15sp"/>
+            android:textColor="@color/Charcoal"
+            android:layout_marginEnd="16dp" />
 
         <TextView
             android:id="@+id/namePokedex"
@@ -29,15 +31,15 @@
             android:layout_height="wrap_content"
             android:text="Pokemon name"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/Pumpkin" />
+
         <ImageButton
             android:id="@+id/catchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/baseline_catching_pokemon_24"/>
-
+            android:layout_marginStart="16dp"
+            android:background="@null"
+            android:src="@drawable/baseline_catching_pokemon_24" />
     </LinearLayout>
-
-
 </androidx.cardview.widget.CardView>

@@ -1,51 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragmentSettings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Charcoal"
     tools:context=".SettingsFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40sp"
+            android:textSize="32sp"
             android:text="@string/settings"
             android:textStyle="bold"
-            android:layout_marginBottom="8sp"/>
+            android:textColor="@color/Sunglow"
+            android:layout_marginBottom="16dp" />
+
         <Switch
             android:id="@+id/deleteSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pokemon_deleting_off_on"
-            android:layout_marginBottom="8sp"/>
+            android:textColor="@color/Olivine"
+            android:layout_marginBottom="16dp" />
+
         <Button
             android:id="@+id/languageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/change_lanaguage"
-            android:layout_marginBottom="8sp"/>
+            android:backgroundTint="@color/Pumpkin"
+            android:textColor="@color/Charcoal"
+            android:layout_marginBottom="16dp" />
+
         <Button
             android:id="@+id/aboutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/about_me"
-            android:layout_marginBottom="8sp"/>
+            android:backgroundTint="@color/Pumpkin"
+            android:textColor="@color/Charcoal"
+            android:layout_marginBottom="16dp" />
 
         <Button
             android:id="@+id/logoutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/log_out_session"/>
-
-
+            android:text="@string/log_out_session"
+            android:backgroundTint="@color/Sunglow"
+            android:textColor="@color/Charcoal" />
     </LinearLayout>
-
-
-
 </FrameLayout>

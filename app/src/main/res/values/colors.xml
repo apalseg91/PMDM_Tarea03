@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="myyellow">#fbd743</color>
-    <color name="myred">#cc0000</color>
-    <color name="myturquoise">#5db9ff</color>
-    <color name="myblue">#363b81</color>
-
-
+    <color name="Charcoal">#cc0000</color>>
+    <color name="Pumpkin" >#3b4cca</color>
+    <color name="Sunglow" >#FCCA46</color>
+    <color name="Olivine" >#b3a125</color>
+    <color name="Zomp" >#ff0000</color>
 </resources>

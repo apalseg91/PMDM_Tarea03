@@ -76,22 +76,27 @@ public class SettingsFragment extends Fragment {
     }
 
     private void changeLanguage() {
-        String currentLanguage = sharedPreferences.getString("language", "en");
+        // Obtiene el idioma actual guardado en las preferencias
+        String currentLanguage = sharedPreferences.getString("language", "default");
         String newLanguage = currentLanguage.equals("en") ? "es" : "en";
-
+        // Verifica si el idioma actual es "default" o "en", y los trata como el mismo
+        if (currentLanguage.equals("default")) {
+            String systemLanguage = Locale.getDefault().getLanguage();
+            if (systemLanguage.equals("en")) {
+                currentLanguage = "en";
+            }
+        }
         // Cambia el idioma
         Locale locale = new Locale(newLanguage);
         Locale.setDefault(locale);
         android.content.res.Configuration config = new android.content.res.Configuration();
         config.locale = locale;
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-
-        // Guarda la preferencia
+        // Guarda la preferencia del idioma
         editor.putString("language", newLanguage);
         editor.apply();
-
+        // Mensaje al usuario
         Toast.makeText(getContext(), "Language changed to " + (newLanguage.equals("en") ? "English" : "Español"), Toast.LENGTH_SHORT).show();
-
         // Reinicia la actividad para aplicar los cambios
         requireActivity().recreate();
     }
