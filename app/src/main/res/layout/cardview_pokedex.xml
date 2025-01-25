@@ -36,8 +36,8 @@
 
         <ImageButton
             android:id="@+id/catchButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="43dp"
             android:layout_marginStart="16dp"
             android:background="@null"
             android:src="@drawable/baseline_catching_pokemon_24" />

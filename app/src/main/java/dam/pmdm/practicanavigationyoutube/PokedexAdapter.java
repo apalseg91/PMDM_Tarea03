@@ -63,8 +63,8 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.PokedexV
     public void onBindViewHolder(@NonNull PokedexViewHolder holder, int position) {
         Pokemon pokemon = pkmnList.get(position);
         // Setea los datos en el cardview
-        holder.nameField.setText("Nombre: \n" + pokemon.getName());
-        holder.idField.setText("Pkmn Id:\n" + String.valueOf(pokemon.getId()));
+        holder.nameField.setText("Nombre:\n"+ pokemon.getName()+"\t\t\t\t\t\t" );
+        holder.idField.setText("ID:\n"+String.valueOf(pokemon.getId()));
         // Actualiza el color y el estado según `isCaught`
         int color = pokemon.isCaught() ? Color.parseColor("#A5D6A7") : Color.WHITE; // Verde si capturado
         holder.cardView.setCardBackgroundColor(color);
@@ -83,10 +83,10 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.PokedexV
                     .document(String.valueOf(pokemon.getId()))
                     .set(pokemon)
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(context, pokemon.getName() + " added to team!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, pokemon.getName() + context.getString(R.string.added_to_team), Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(context, "Failed to add " + pokemon.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.failed_to_add) + pokemon.getName(), Toast.LENGTH_SHORT).show();
                     });
         });
     }

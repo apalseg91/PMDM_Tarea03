@@ -7,7 +7,7 @@
     <string name="pokemons_height">Pokemons Height</string>
     <string name="pokemons_weight">Pokemons weight</string>
     <string name="pokemon_deleting_off_on">Pokemon Deleting Off/On</string>
-    <string name="change_lanaguage">Cambiar Language</string>
+    <string name="change_lanaguage">Change Language</string>
     <string name="about_me">About me…</string>
     <string name="log_out_session">Log Out Session</string>
     <string name="delete_from_team">Delete from team</string>
@@ -35,4 +35,34 @@
     <string name="type_dark">Dark</string>
     <string name="type_steel">Steel</string>
     <string name="type_fairy">Fairy</string>
+
+    <string name="id">"ID: "</string>
+    <string name="kg">" kg"</string>
+    <string name="cm">" cm"</string>
+    <string name="types">"Types: "</string>
+    <string name="error_de_login">Login Error </string>
+    <string name="google_sign_in_failed">Google sign-in failed</string>
+    <string name="error_al_autenticar_con_google">Authentication with Google-Account Error</string>
+    <string name="por_favor_llena_todos_los_campos">Please, no empty fields</string>
+    <string name="error">"Error: "</string>
+    <string name="rellena_todos_los_campos">Please, fill all textfields</string>
+    <string name="min_caracteres_psswd">PAssword must have min 6 characters</string>
+    <string name="usuario_registrado_exitosamente">User logged successfully</string>
+    <string name="item_clicked">"Item clicked: "</string>
+    <string name="added_to_team">" added to team!"</string>
+    <string name="failed_to_add">"Failed to add "</string>
+    <string name="delete_pok_mon">"Delete Pokémon: "</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+    <string name="language_changed_to">"Language changed to "</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish</string>
+    <string name="about">About...</string>
+    <string name="description_msg">Developed by: Alejandro Palomeque Segura.\n\nIES Aguadulce-Distancia\n\nTarea 3.-PMDM 2024-2025\n\nVersión: 1.0.0</string>
+    <string name="unknown">Unknown</string>
+    <string name="eliminado_del_equipo">" deleted from team"</string>
+    <string name="error_al_eliminar_pok_mon">Deleting error: </string>
+    <string name="el_bloqueo_est_activo">Pokemons cannot be detelated while deleting is not allow</string>
+    <string name="failure_loading_team">Failure loading team</string>
+    <string name="error_cargando_detalles">Failure loading details</string>
 </resources>

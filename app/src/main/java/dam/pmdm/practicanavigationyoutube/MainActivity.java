@@ -54,15 +54,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean onMenuSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.buttonPokedex) {
             navController.navigate(R.id.fragmentPokedex);
-            Toast.makeText(this, "Item clicked: " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.item_clicked) + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
             return true;
         } else if (menuItem.getItemId() == R.id.buttonTeam) {
             navController.navigate(R.id.fragmentTeam);
-            Toast.makeText(this, "Item clicked: " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.item_clicked)+ menuItem.getTitle(), Toast.LENGTH_SHORT).show();
             return true;
         } else if (menuItem.getItemId() == R.id.buttonSettings) {
             navController.navigate(R.id.fragmentSettings);
-            Toast.makeText(this, "Item clicked: " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.item_clicked) + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
             return true;
         }
         return true;

@@ -75,7 +75,7 @@ public class SettingsFragment extends Fragment {
         deleteSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             editor.putBoolean("isDeletable", isChecked);
             editor.apply();
-            Toast.makeText(getContext(), "Delete Pokémon: " + (isChecked ? "Enabled" : "Disabled"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.delete_pok_mon) + (isChecked ? getString(R.string.enabled) : getString(R.string.disabled)), Toast.LENGTH_SHORT).show();
         });
 
         // Listener para el cambio de idioma
@@ -107,7 +107,7 @@ public class SettingsFragment extends Fragment {
         editor.apply();
 
         // Mensaje al usuario
-        Toast.makeText(getContext(), "Language changed to " + (newLanguage.equals("en") ? "English" : "Español"), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getString(R.string.language_changed_to) + (newLanguage.equals("en") ? getString(R.string.english) : getString(R.string.spanish)), Toast.LENGTH_SHORT).show();
 
         // Reinicia la actividad para aplicar los cambios
         requireActivity().recreate();
@@ -129,8 +129,9 @@ public class SettingsFragment extends Fragment {
      */
     private void showAboutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("About...");
-        builder.setMessage("Developed by: Alejandro Palomeque Segura.\n\nIES Aguadulce-Distancia\n\nTarea 3.-PMDM 2024-2025\n\nVersión: 1.0.0");
+        builder.setTitle(R.string.about);
+        String message = getString(R.string.description_msg);
+        builder.setMessage(message);
         builder.setPositiveButton("OK", null);
         builder.create().show();
     }

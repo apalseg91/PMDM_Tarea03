@@ -97,8 +97,9 @@ public class LoginActivity extends AppCompatActivity {
                     firebaseAuthWithGoogle(account.getIdToken());
                 }
             } catch (Exception e) {
-                Log.d("Error de login", e.toString());
-                Toast.makeText(this, "Google sign-in failed", Toast.LENGTH_SHORT).show();
+                Log.d(getString(R.string.error_de_login), e.toString());
+                String text = getString(R.string.google_sign_in_failed);
+                Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -119,7 +120,8 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(this, "Error al autenticar con Google", Toast.LENGTH_SHORT).show();
+                        String text = getString(R.string.error_al_autenticar_con_google);
+                        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -133,7 +135,8 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString().trim();
 
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Por favor, llena todos los campos", Toast.LENGTH_SHORT).show();
+            String text = getString(R.string.por_favor_llena_todos_los_campos);
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -143,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.error) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -157,21 +160,23 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString().trim();
 
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Por favor, llena todos los campos", Toast.LENGTH_SHORT).show();
+            String text = getString(R.string.rellena_todos_los_campos);
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (password.length() < 6) {
-            Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
+            String text = getString(R.string.min_caracteres_psswd);
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
             return;
         }
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.usuario_registrado_exitosamente), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.error) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

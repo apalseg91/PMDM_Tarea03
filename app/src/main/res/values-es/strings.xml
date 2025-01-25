@@ -35,5 +35,35 @@
     <string name="type_dark">Siniestro</string>
     <string name="type_steel">Acero</string>
     <string name="type_fairy">Hada</string>
+    <string name="id">"ID: "</string>
+
+    <string name="kg">" kg"</string>
+    <string name="cm">" cm"</string>
+    <string name="types">"Tipos: "</string>
+    <string name="error_de_login">Error de login</string>
+    <string name="google_sign_in_failed">Error al registarse con cuenta Google</string>
+    <string name="error_al_autenticar_con_google">Error al autenticar con Google</string>
+    <string name="por_favor_llena_todos_los_campos">Por favor, no deje campos vacíos</string>
+    <string name="error">"Error: "</string>
+    <string name="rellena_todos_los_campos">Por favor, rellena todos los campos</string>
+    <string name="min_caracteres_psswd">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="usuario_registrado_exitosamente">Usuario registrado exitosamente</string>
+    <string name="item_clicked">"Botón seleccioando: "</string>
+    <string name="added_to_team">" añadido al equipo!"</string>
+    <string name="failed_to_add">"Error al añadir: "</string>
+    <string name="delete_pok_mon">"Pokémon borrado: "</string>
+    <string name="enabled">Habilitado</string>
+    <string name="disabled">Deshabilitado</string>
+    <string name="language_changed_to">"Idioma cambiado a "</string>
+    <string name="english">Inglés</string>
+    <string name="spanish">Español</string>
+    <string name="about">Sobre mi...</string>
+    <string name="description_msg">Desarrollado por: Alejandro Palomeque Segura.\n\nIES Aguadulce-Distancia\n\nTarea 3.-PMDM 2024-2025\n\nVersión: 1.0.0</string>
+    <string name="unknown">Desconocido</string>
+    <string name="eliminado_del_equipo">" eliminado del equipo"</string>
+    <string name="error_al_eliminar_pok_mon">Error al eliminar Pokémon</string>
+    <string name="el_bloqueo_est_activo">No puedes eliminar Pokémon mientras el bloqueo esté activo</string>
+    <string name="failure_loading_team">Algo falló al cargar el equipo</string>
+    <string name="error_cargando_detalles">Algo falló al cargar los detalles</string>
 
 </resources>

@@ -122,8 +122,6 @@ public class TeamFragment extends Fragment {
      * Carga el equipo desde Firestore y actualiza la lista local.
      */
     private void loadTeamFromFirestore() {
-        //todo: borrar traza
-        Log.d("Firestore", "Recargando equipo desde Firestore...");
         firestore.collection("team")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -147,7 +145,7 @@ public class TeamFragment extends Fragment {
                                                         pokemon.setImageUrl(details.getSprites().getFrontDefault());
                                                     }
                                                     adapter.notifyDataSetChanged();
-                                                    //TODO: BORRAR DEPURACION
+
                                                     Log.d("API Raw Response", new Gson().toJson(response.body()));
                                                 } else {
                                                     Log.e("API Error", "Response not successful");
@@ -156,8 +154,8 @@ public class TeamFragment extends Fragment {
 
                                             @Override
                                             public void onFailure(Call<Pokemon> call, Throwable t) {
-                                                Log.e("FirestoreError", "Error al cargar el equipo: " + t.getMessage());
-                                                Toast.makeText(getContext(), "Error cargando detalles", Toast.LENGTH_SHORT).show();
+
+                                                Toast.makeText(getContext(), getString(R.string.error_cargando_detalles), Toast.LENGTH_SHORT).show();
                                             }
                                         });
                             }
@@ -166,7 +164,7 @@ public class TeamFragment extends Fragment {
                         adapter.notifyDataSetChanged();
 
                     } else {
-                        Toast.makeText(getContext(), "Failure loading team", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.failure_loading_team), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

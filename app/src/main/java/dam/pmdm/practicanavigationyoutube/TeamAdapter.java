@@ -1,5 +1,6 @@
 package dam.pmdm.practicanavigationyoutube;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
-import androidx.media3.common.util.Log;
 import androidx.media3.common.util.UnstableApi;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -123,7 +123,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
             }
             holder.typesField.setText(translatedTypes.toString());
         } else {
-            holder.typesField.setText("Unknown"); // Si no hay tipos, muestra "Unknown"
+            holder.typesField.setText(R.string.unknown); // Si no hay tipos, muestra "Unknown"
         }
         //manejo del botond de borrado
         holder.deleteButton.setOnClickListener(v -> {
@@ -139,13 +139,13 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
                             notifyItemRemoved(position);
                             notifyItemRangeChanged(position, pkmnList.size());
                             //informo del pokemon eliminado
-                            Toast.makeText(v.getContext(), pokemon.getName() + " eliminado del equipo", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), pokemon.getName() + context.getString(R.string.eliminado_del_equipo), Toast.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> {//si ha habido algun error
-                            Toast.makeText(v.getContext(), "Error al eliminar Pokémon", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(), context.getString(R.string.error_al_eliminar_pok_mon), Toast.LENGTH_SHORT).show();
                         });
             } else {//si no está activa la opción de borrado informo
-                Toast.makeText(v.getContext(), "No puedes eliminar Pokémon mientras el bloqueo esté activo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), R.string.el_bloqueo_est_activo, Toast.LENGTH_SHORT).show();
             }
         });
         // Configurar el clic en el elemento

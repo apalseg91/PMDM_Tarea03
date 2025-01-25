@@ -69,10 +69,10 @@ public class DetailsFragment extends Fragment {
             int weight = args.getInt("pokemon_weight", -1);
 
             // Asigno los valores a los elementos que han de mostrarlos
-            idDetails.setText("ID: " + id);
+            idDetails.setText(getString(R.string.id) + id);
             nameDetails.setText(name);
-            heightDetails.setText(String.valueOf(height)+" kg");
-           weightDetails.setText(String.valueOf(weight)+" m");
+            heightDetails.setText(String.valueOf(height)+getString(R.string.kg));
+           weightDetails.setText(String.valueOf(weight)+getString(R.string.cm));
 
             // Traducir los tipos del Pokémon
             StringBuilder translatedTypes = new StringBuilder();
@@ -94,7 +94,7 @@ public class DetailsFragment extends Fragment {
             }
 
             // Establecer los tipos traducidos
-            typeDetails.setText("Types: " + translatedTypes.toString());
+            typeDetails.setText(getString(R.string.types) + translatedTypes.toString());
 
             // Mostrar la imagen del Pokémon
             Glide.with(this)
