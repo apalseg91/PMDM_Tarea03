@@ -37,10 +37,15 @@ Este trabajo ha supuesto todo un reto en cuanto a dificultad, tiempo y ejecució
 ---
 
 # Capturas
+---
 ![Login](assets/images/Login.png)
+---
 ![Pokedex](assets/images/Pokedex.png)
+---
 ![Equipo](assets/images/Equipo.png)
+---
 ![Detalles](assets/images/Detalles.png)
+---
 ![Ajustes](assets/images/Ajustes.png)
-
+---
 
